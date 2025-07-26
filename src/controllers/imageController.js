@@ -1,4 +1,4 @@
-import openaiService from '../services/openaiService.js'
+import openaiService from '../services/imageGenerationService.js'
 import { cleanupFiles } from '../utils/fileUtils.js'
 import { HTTP_STATUS, SUCCESS_MESSAGES } from '../utils/constants.js'
 
