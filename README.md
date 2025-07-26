@@ -60,5 +60,6 @@ The app is ready for deployment on platforms like:
 - Railway
 - Render
 - Vercel (with Node.js runtime)
+- etc.
 
 Make sure to set the required environment variables in your deployment platform.
