@@ -18,11 +18,10 @@ class OpenAIService {
 
     const form = new FormData()
 
-    console.log(`Processing ${uploadedFiles.length} images with prompt: "${prompt}"`)
+    console.log(`Processing ${uploadedFiles.length} images`)
 
     // Append images to form data
     uploadedFiles.forEach((file, index) => {
-      console.log(`Appending image ${index + 1}/${uploadedFiles.length}: ${file.originalname}`)
       form.append('image[]', fs.createReadStream(file.path))
     })
 
@@ -34,8 +33,6 @@ class OpenAIService {
     form.append('n', n)
     if (size) form.append('size', size)
     if (model) form.append('model', model)
-
-    console.log('Sending request to OpenAI API...')
 
     try {
       const response = await axios.post(`${this.baseURL}/images/edits`, form, {
@@ -59,8 +56,6 @@ class OpenAIService {
     generatedImagesData.forEach((imageData, index) => {
       const b64Image = imageData.b64_json
       
-      console.log(`Generated image ${index + 1} processed`)
-      
       results.push({
         imageBuffer: b64Image,
         filename: `generated_image_${Date.now()}_${index}.png`,
@@ -68,6 +63,7 @@ class OpenAIService {
       })
     })
 
+    console.log(`Generated ${results.length} images successfully`)
     return results
   }
 }

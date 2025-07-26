@@ -4,10 +4,8 @@ import config from './src/config/index.js'
 const host = '0.0.0.0' // Railway requires binding to all interfaces
 
 const server = app.listen(config.port, host, () => {
-  console.log(`🚀 Server is running on ${host}:${config.port}`)
-  console.log(`📁 Uploads directory: ${config.uploadsDir}`)
-  console.log(`📁 Output directory: ${config.outputDir}`)
-  console.log(`🔑 OpenAI API Key configured: ${config.openaiApiKey ? '✅' : '❌'}`)
+  console.log(`🚀 Server running on ${host}:${config.port}`)
+  console.log(`🔑 OpenAI API: ${config.openaiApiKey ? 'Configured' : 'Missing'}`)
 })
 
 server.on('error', (error) => {
@@ -17,7 +15,7 @@ server.on('error', (error) => {
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
-  console.log('🛑 SIGTERM received, shutting down gracefully')
+  console.log('🛑 Shutting down gracefully...')
   server.close(() => {
     console.log('✅ Server closed')
     process.exit(0)
