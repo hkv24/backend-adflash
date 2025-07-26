@@ -2,8 +2,14 @@ import fs from 'fs'
 import path from 'path'
 
 export const ensureDirectoryExists = (dirPath) => {
-  if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath, { recursive: true })
+  try {
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true })
+      console.log(`✅ Created directory: ${dirPath}`)
+    }
+  } catch (error) {
+    console.error(`❌ Failed to create directory ${dirPath}:`, error.message)
+    // Don't throw error, just log it - Railway might have read-only filesystem restrictions
   }
 }
 

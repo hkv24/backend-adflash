@@ -1,9 +1,25 @@
 import app from './src/app.js'
 import config from './src/config/index.js'
 
-app.listen(config.port, () => {
-  console.log(`🚀 Server is running on port: ${config.port}`)
+const host = '0.0.0.0' // Railway requires binding to all interfaces
+
+const server = app.listen(config.port, host, () => {
+  console.log(`🚀 Server is running on ${host}:${config.port}`)
   console.log(`📁 Uploads directory: ${config.uploadsDir}`)
   console.log(`📁 Output directory: ${config.outputDir}`)
   console.log(`🔑 OpenAI API Key configured: ${config.openaiApiKey ? '✅' : '❌'}`)
+})
+
+server.on('error', (error) => {
+  console.error('❌ Server failed to start:', error)
+  process.exit(1)
+})
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('🛑 SIGTERM received, shutting down gracefully')
+  server.close(() => {
+    console.log('✅ Server closed')
+    process.exit(0)
+  })
 })
