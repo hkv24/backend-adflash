@@ -1,4 +1,4 @@
-import openaiService from '../services/imageGenerationService.js'
+import imageGenerationService from '../services/imageGenerationService.js'
 import { cleanupFiles } from '../utils/fileUtils.js'
 import { HTTP_STATUS, SUCCESS_MESSAGES } from '../utils/constants.js'
 
@@ -13,8 +13,8 @@ export const generateImages = async (req, res, next) => {
       size
     }
 
-    // Generate images using OpenAI service
-    const results = await openaiService.generateImages(uploadedFiles, prompt, options)
+    // Generate images using image generation service
+    const results = await imageGenerationService.generateImages(uploadedFiles, prompt, options)
 
     // Clean up uploaded files after successful processing
     cleanupFiles(req.files)

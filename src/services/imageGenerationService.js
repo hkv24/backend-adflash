@@ -3,7 +3,7 @@ import axios from 'axios'
 import fs from 'fs'
 import config from '../config/index.js'
 
-class OpenAIService {
+class ImageGenerationService {
   constructor() {
     this.apiKey = config.openaiApiKey
     this.baseURL = 'https://api.openai.com/v1'
@@ -68,4 +68,4 @@ class OpenAIService {
   }
 }
 
-export default new OpenAIService()
+export default new ImageGenerationService()
