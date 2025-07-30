@@ -19,22 +19,18 @@ class TitleDescriptionService {
         const description = 'Sneakers. Never Shy, Never Sorry. Comet is a homegrown lifestyle brand that creates unisex sneakers and believes in living fearlessly and uninhibited. With a bold portfolio of 14+ colorways and exclusive drops, Comet delivers sneakers for men, sneakers for women, and running shoes.'
 
         try {
-            const createVariation = (n) => {
-                return {
-                    role: 'user',
-                    content: `Suggest me Variation${n} of a title and a description suitable for on topic 'Title: ${title}, Description: ${description}'. Start the title with 'Title:' and description with 'Description:'. `
-                }
-            }
-
             const response = await client.responses.create({
                 model: "gpt-4o",
-                temperature: 1.7,
+                temperature: 1.2,
                 input: [
                     {
                         role: 'developer',
                         content: 'I run a advertisement generation agency, so while replying keep that in mind. Give response in minimum words possible.'
                     },
-                    createVariation(1)
+                    {
+                        role: 'user',
+                        content: `Suggest me 3 different combination of title and description suitable for topic 'Title: ${title}, Description: ${description}'. Start the title with 'Title:' and description with 'Description:'. `
+                    }
                 ]
             })
 
