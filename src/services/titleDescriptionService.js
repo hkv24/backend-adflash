@@ -18,7 +18,7 @@ class TitleDescriptionService {
         try {
             const response = await client.responses.create({
                 model: "gpt-4o",
-                temperature: 1.2,
+                temperature: 1.45,
                 input: [
                     {
                         role: 'developer',
