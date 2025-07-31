@@ -2,9 +2,11 @@ import TitleDescriptionService from "../services/titleDescriptionService.js"
 
 export const generateTitleAndDescription = async (req, res, next) => {
   try {
-    const result = await TitleDescriptionService.generateTitleAndDescription()
+    const { title, description } = req.body
 
-    res.status(200).json({result})
+    const result = await TitleDescriptionService.generateTitleAndDescription(title, description)
+
+    res.status(200).json(result)
   } catch (error) {
     next(error)
   }
