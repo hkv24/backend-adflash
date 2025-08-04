@@ -4,17 +4,24 @@ import { HTTP_STATUS, SUCCESS_MESSAGES } from '../utils/constants.js'
 
 export const generateImages = async (req, res, next) => {
   try {
-    const { prompt, n, model, size } = req.body
+    const { prompt, n, model, size, cta, adTheme, language, aspectRatio } = req.body
     const uploadedFiles = req.files
 
     const options = {
       n: n ? parseInt(n) : 1,
-      model,
-      size
+      model
     }
 
     // Generate images using image generation service
-    const results = await imageGenerationService.generateImages(uploadedFiles, prompt, options)
+    const results = await imageGenerationService.generateImages(
+      uploadedFiles, 
+      prompt, 
+      cta, 
+      adTheme, 
+      language, 
+      aspectRatio, 
+      options
+    )
 
     // Clean up uploaded files after successful processing
     cleanupFiles(req.files)

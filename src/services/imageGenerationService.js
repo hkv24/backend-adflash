@@ -9,8 +9,18 @@ class ImageGenerationService {
     this.baseURL = 'https://api.openai.com/v1'
   }
 
-  async generateImages(uploadedFiles, prompt, options = {}) {
-    const { n = 1, model, size } = options
+  async generateImages(uploadedFiles, prompt, cta = '', adTheme = '', language = '', aspectRatio = '1:1', options = {}) {
+    const { n = 1, model } = options
+    let size
+    if (aspectRatio && aspectRatio.includes('1:1'))
+      size = '1024x1024'
+    else if (aspectRatio && aspectRatio.includes('16:9'))
+      size = '1536x1024'
+    else if (aspectRatio && aspectRatio.includes('9:16'))
+      size = '1024x1536'
+    else
+      size = '1024x1024'
+    
 
     if (!this.apiKey) {
       throw new Error('OpenAI API key is not configured')
@@ -18,20 +28,32 @@ class ImageGenerationService {
 
     const form = new FormData()
 
-    console.log(`Processing ${uploadedFiles.length} images`)
-
     // Append images to form data
     uploadedFiles.forEach((file, index) => {
       form.append('image[]', fs.createReadStream(file.path))
     })
 
     // Enhance prompt with professional ad requirements
-    const enhancedPrompt = `${prompt} Make sure, it looks professional and a high quality ad and every text (if any) is clearly visible. CTA Buy Now`
+    let enhancedPrompt = prompt
+    
+    if (adTheme) {
+      enhancedPrompt += ` The Advertisement Theme is ${adTheme}.`
+    }
+    
+    if (language) {
+      enhancedPrompt += ` It should be in ${language} language.`
+    }
+    
+    enhancedPrompt += ' Make sure it looks professional and a high quality ad and every text (if any) is clearly visible.'
+    
+    if (cta) {
+      enhancedPrompt += ` CTA: ${cta}`
+    }
 
     // Append other parameters
     form.append('prompt', enhancedPrompt)
     form.append('n', n)
-    if (size) form.append('size', size)
+    form.append('size', size)
     if (model) form.append('model', model)
 
     try {
@@ -63,7 +85,6 @@ class ImageGenerationService {
       })
     })
 
-    console.log(`Generated ${results.length} images successfully`)
     return results
   }
 }
